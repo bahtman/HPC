@@ -1,0 +1,75 @@
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 11866023: <tunelab> in cluster <dcc> Done
+
+Job <tunelab> was submitted from host <n-62-30-3> by user <s174516> in cluster <dcc> at Tue Jan  4 12:01:24 2022
+Job was executed on host(s) <n-62-21-77>, in queue <hpcintro>, as user <s174516> in cluster <dcc> at Tue Jan  4 12:01:26 2022
+</zhome/fa/5/127129> was used as the home directory.
+</zhome/fa/5/127129/HPC/day2/exercises/tune> was used as the working directory.
+Started at Tue Jan  4 12:01:26 2022
+Terminated at Tue Jan  4 12:04:19 2022
+Results reported at Tue Jan  4 12:04:19 2022
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+### -- set the job Name --
+#BSUB -J tunelab
+### –- specify queue --
+#BSUB -q hpcintro
+### -- ask for number of cores (default: 1) --
+#BSUB -n 1
+### -- set walltime limit: hh:mm --
+#BSUB -W 5
+### -- specify that we need 2GB of memory per core/slot -- 
+#BSUB -R "rusage[mem=1GB]"
+### -- Specify the output and error file. %J is the job-id -- 
+### -- -o and -e mean append, -oo and -eo mean overwrite -- 
+#BSUB -o Output_%J.out
+#BSUB -e Error_%J.err
+CC=${1-"gcc"}
+
+NPARTS="2000 3000 4000 5000 7500 10000 20000 40000 80000 200000 400000 800000 1200000 1600000 3000000"
+LOOPS=1000
+LOGEXT=$CC.dat
+
+/bin/rm -f aos.$LOGEXT soa.$LOGEXT
+for particles in $NPARTS
+do
+    ./aos.${CC} $LOOPS $particles | grep -v CPU >> aos.$LOGEXT
+    ./soa.${CC} $LOOPS $particles | grep -v CPU >> soa.$LOGEXT
+done
+
+# time to say 'Good bye' ;-)
+#
+exit 0
+
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   172.59 sec.
+    Max Memory :                                 119 MB
+    Average Memory :                             94.00 MB
+    Total Requested Memory :                     1024.00 MB
+    Delta Memory :                               905.00 MB
+    Max Swap :                                   -
+    Max Processes :                              5
+    Max Threads :                                6
+    Run time :                                   173 sec.
+    Turnaround time :                            175 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <Error_11866023.err> for stderr output of this job.
+
