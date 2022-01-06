@@ -6,7 +6,7 @@
 #
 # Author: Bernd Dammann <bd@cc.dtu.dk>
 #
-#BSUB -J mm_batch
+#BSUB -J blksize
 #BSUB -o mm_batch_%J.out
 #BSUB -q hpcintro
 #BSUB -n 1
@@ -15,7 +15,7 @@
 # uncomment the following line, if you want to assure that your job has
 # a whole CPU for itself (shared L3 cache)
 #BSUB -R "span[hosts=1] affinity[socket(1)]"
-
+module load gcc
 # define the driver name to use
 # valid values: matmult_c.studio, matmult_f.studio, matmult_c.gcc or
 # matmult_f.gcc
@@ -24,7 +24,7 @@ EXECUTABLE=matmult_c.gcc
 
 # define the mkn values in the MKN variable
 #
-SIZES="100 200 500"
+SIZES=250
 
 # define the permutation type in PERM
 #
@@ -32,14 +32,16 @@ PERM="blk"
 
 # uncomment and set a reasonable BLKSIZE for the blk version
 #
-BLKSIZE=250
+BLKSIZE="5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20"
 
 # enable(1)/disable(0) result checking
 export MATMULT_COMPARE=0
 export MATMULT_RESULTS=0
 
+/bin/rm -f blk.dat
+
 # start the collect command with the above settings
-for S in $SIZES
+for BS in $BLKSIZE
 do
-    ./$EXECUTABLE $PERM $S $S $S $BLKSIZE
+    ./$EXECUTABLE $PERM $SIZES $SIZES $SIZES $BS | grep -v CPU >> blk.dat
 done
