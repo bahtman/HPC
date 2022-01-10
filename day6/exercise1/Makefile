@@ -1,6 +1,6 @@
 CC	= gcc
 t = 4
-OPT	= -g -O3 #-ftree-parallelize-loops=$(t) -ffast-math
+OPT	= -g -O3 -ftree-parallelize-loops=$(t) -ffast-math
 CHIP	= 
 ISA	= 
 LIBS	= -lm

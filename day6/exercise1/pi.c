@@ -9,7 +9,6 @@ double pi(int N) {
 
     }
     sum /=N;
-    printf("\nPI = %.6lf", sum);
 
 
     return sum;
